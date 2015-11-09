@@ -75,11 +75,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     mm.enable.smoothstreaming=true \
     mm.enable.qcom_parser=3310129 \
-    ro.qc.sdk.audio.fluencetype=fluence \
-    persist.audio.fluence.voicecall=true \
     audio.offload.buffer.size.kb=32 \
     audio.offload.video=true \
-    av.streaming.offload.enable=true \
     use.voice.path.for.pcm.voip=true \
     audio.offload.multiple.enabled=false \
     audio.offload.gapless.enabled=true \
@@ -97,7 +94,7 @@ TARGET_SCREEN_WIDTH := 1080
 
 # Camera
 PRODUCT_PACKAGES += \
-    camera.bacon
+    SnapdragonCamera
 
 # Charger
 PRODUCT_PACKAGES += \
@@ -122,7 +119,8 @@ PRODUCT_PACKAGES += \
     gralloc.msm8974 \
     hwcomposer.msm8974 \
     memtrack.msm8974 \
-    liboverlay
+    liboverlay \
+    libboringssl-compat
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -137,7 +135,7 @@ PRODUCT_COPY_FILES += \
 
 # IO Scheduler
 PRODUCT_PROPERTY_OVERRIDES += \
-    sys.io.scheduler=bfq
+    sys.io.scheduler=deadline
 
 # IPC router config
 PRODUCT_COPY_FILES += \
@@ -150,6 +148,11 @@ PRODUCT_PACKAGES += \
 # Lights
 PRODUCT_PACKAGES += \
     lights.msm8974
+
+# Limit dex2oat threads to improve thermals
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-threads=2 \
+    dalvik.vm.image-dex2oat-threads=4
 
 # Media profile
 PRODUCT_COPY_FILES += \
@@ -229,7 +232,7 @@ PRODUCT_COPY_FILES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    power.msm8974
+    power.bacon
 
 # Proprietary wifi display, if available
 ifneq ($(QCPATH),)
@@ -301,10 +304,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     telephony.lteOnGsmDevice=1 \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=15 \
-    ro.qualcomm.perf.cores_online=2 \
-    ro.vendor.extension_library=libqti-perfd-client.so \
     ro.telephony.call_ring.multiple=0 \
-    ro.telephony.default_network=9
+    ro.telephony.default_network=9 \
+    persist.sys.strictmode.disable=true
 
 # Call the proprietary setup
 $(call inherit-product-if-exists, vendor/oneplus/bacon/bacon-vendor.mk)
