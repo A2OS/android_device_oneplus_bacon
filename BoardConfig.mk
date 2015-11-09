@@ -29,6 +29,7 @@ TARGET_NO_RADIOIMAGE := true
 
 # Firmware
 TARGET_SET_BUILD_FIRMWARE := true
+include build/firmware/Android.mk
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8974
